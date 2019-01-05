@@ -24,10 +24,6 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
-Include/
-Lib/
-Scripts/
-tcl/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -108,6 +104,6 @@ venv.bak/
 .mypy_cache/
 
 test_values.txt
-pip-selfcheck.json
 *.code-workspace
 settings.json
+launch.json
