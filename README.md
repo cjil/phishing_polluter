@@ -1,4 +1,4 @@
-# phishing_polluter
+# Phishing Polluter
 Pollute phishing attempts with fake username/password combinations
 
 Based on the youtube video of Engineer Man, I expanded upon it as an exercise to provide more pollution to the phishing scammers files in a shorter time.
@@ -18,9 +18,9 @@ python phishing_polluter --help
 python phishing_polluter <TARGET_URL> [--username_code] [--password_code]
 
 ## Options
-### qty
+#### qty
 * Number of email address / password combinations to pollute the list with
-### username_code
+#### username_code
 * Username POST field name
-### password_code
+#### password_code
 * Password POST field name
