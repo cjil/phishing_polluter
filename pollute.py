@@ -8,7 +8,7 @@ from accounts import Accounts
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
-async def email(url, username_code, password_code, email, password, headers):
+async def post_email(url, username_code, password_code, email, password, headers):
     """Send the username and password combination to the URL
 
     Keyword arguments:
@@ -67,7 +67,7 @@ def pollute(**kwargs):
         json.loads(open('domains.json').read()))
     loop = asyncio.get_event_loop()
     tasks = [
-        email(
+        post_email(
             url,
             username_code,
             password_code,
