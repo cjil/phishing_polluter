@@ -57,9 +57,8 @@ def pollute(**kwargs):
         json.loads(open('last_names.json').read()), 
         json.loads(open('domains.json').read()))
     loop = asyncio.get_event_loop()
-    future = loop.create_future()
-    for i in range(0, number_of_email_addresses):
-        future = loop.create_task(email(url, username_code, password_code, accounts.email(), accounts.password(8, 16), accounts.headers()))
+    tasks = [email(url, username_code, password_code, accounts.email(), accounts.password(8, 16), accounts.headers()) for i in range(0, number_of_email_addresses)]
+    future = asyncio.gather(*tasks, return_exceptions=True)
     loop.run_until_complete(future)
     finish_time = time.time() - start_time
     print(f'  execution time: {finish_time:.2f}s')
