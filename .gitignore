@@ -109,3 +109,5 @@ venv.bak/
 
 test_values.txt
 pip-selfcheck.json
+*.code-workspace
+settings.json

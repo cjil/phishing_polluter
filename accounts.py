@@ -1,6 +1,7 @@
 import os
 import secrets
 import string
+from fake_useragent import UserAgent
 
 
 class Accounts():
@@ -31,6 +32,7 @@ class Accounts():
         self.last_names = last_names
         self.domains = domains
         self.chars = f'{string.ascii_letters}{string.digits}!@#$%^&*()'
+        self.ua = UserAgent()
 
 
     def email(self):
@@ -125,3 +127,9 @@ class Accounts():
         """
         password_length = secrets.randbelow(max-min) + min
         return "".join(secrets.choice(self.chars) for i in range(password_length))
+
+
+    def headers(self):
+        return {
+            'User-Agent': self.ua.random,
+        }

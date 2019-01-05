@@ -8,7 +8,7 @@ from accounts import Accounts
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
-async def email(url, username_code, password_code, email, password):
+async def email(url, username_code, password_code, email, password, headers):
     """Send the username and password combination to the URL
 
     Keyword arguments:
@@ -18,10 +18,11 @@ async def email(url, username_code, password_code, email, password):
     email TEXT          email address
     password TEXT       password
     """
+
     try:
         requests.post(url, allow_redirects=False, data={
             username_code: email,
-            password_code: password})
+            password_code: password}, headers=headers)
         print(f"Sending username: {email} and password {password}")
     except requests.exceptions.ConnectionError:
         print(f"Unable to connect: {email} and password {password}")
@@ -58,7 +59,7 @@ def pollute(**kwargs):
     loop = asyncio.get_event_loop()
     future = loop.create_future()
     for i in range(0, number_of_email_addresses):
-        future = loop.create_task(email(url, username_code, password_code, accounts.email(), accounts.password(8, 16)))
+        future = loop.create_task(email(url, username_code, password_code, accounts.email(), accounts.password(8, 16), accounts.headers()))
     loop.run_until_complete(future)
     finish_time = time.time() - start_time
     print(f'  execution time: {finish_time:.2f}s')
