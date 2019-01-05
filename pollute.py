@@ -31,9 +31,18 @@ async def email(url, username_code, password_code, email, password, headers):
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click.version_option(version='1.0.0')
 @click.argument('url')
-@click.option('--qty', default=1000, help='Number of email/password combinations to generate')
-@click.option('--username_code', default='username', help='POST Username fieldname')
-@click.option('--password_code', default='password', help='POST Password fieldname')
+@click.option(
+    '--qty',
+    default=1000,
+    help='Number of email/password combinations to generate')
+@click.option(
+    '--username_code',
+    default='username',
+    help='POST Username fieldname')
+@click.option(
+    '--password_code',
+    default='password',
+    help='POST Password fieldname')
 def pollute(**kwargs):
     """Spam fake username & password combinations to the POST URL endpoint
 
@@ -45,7 +54,7 @@ def pollute(**kwargs):
     qty INTEGER         Number of email/password combinations to generate
     """
     start_time = time.time()
-    
+
     url = kwargs['url']
     username_code = kwargs['username_code']
     password_code = kwargs['password_code']
@@ -53,11 +62,19 @@ def pollute(**kwargs):
     kwargs = None
 
     accounts = Accounts(
-        json.loads(open('first_names.json').read()), 
-        json.loads(open('last_names.json').read()), 
+        json.loads(open('first_names.json').read()),
+        json.loads(open('last_names.json').read()),
         json.loads(open('domains.json').read()))
     loop = asyncio.get_event_loop()
-    tasks = [email(url, username_code, password_code, accounts.email(), accounts.password(8, 16), accounts.headers()) for i in range(0, number_of_email_addresses)]
+    tasks = [
+        email(
+            url,
+            username_code,
+            password_code,
+            accounts.email(),
+            accounts.password(8, 16),
+            accounts.headers()
+        ) for i in range(0, number_of_email_addresses)]
     future = asyncio.gather(*tasks, return_exceptions=True)
     loop.run_until_complete(future)
     finish_time = time.time() - start_time

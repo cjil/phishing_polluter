@@ -18,12 +18,11 @@ class Accounts():
         password(min, max)
     """
 
-
     def __init__(self, first_names, last_names, domains):
         """Initialise the class
 
         Keyword arguments:
-        
+
         first_names LIST    First names
         last_names LIST     Last names
         domains LIST        Domain names
@@ -34,13 +33,12 @@ class Accounts():
         self.chars = f'{string.ascii_letters}{string.digits}!@#$%^&*()'
         self.ua = UserAgent()
 
-
     def email(self):
         """Generate random first_name, last_name, domain name and name
         extra using the first_names, last_names, domain_names lists and
         a random integer.
-        
-        Return a random email address 
+
+        Return a random email address
         """
         random_choice = secrets.SystemRandom().choice
         first_name = random_choice(self.first_names).lower()
@@ -48,11 +46,10 @@ class Accounts():
         domain = random_choice(self.domains).lower()
         name_extra = str(secrets.randbelow(99))
         return self.email_generator(first_name, last_name, name_extra, domain)
-        
 
     def email_generator(self, first_name, last_name, name_extra, domain):
         """Return a random email address
-        
+
         Keyword arguments:
 
         first_name STRING   First name
@@ -117,7 +114,6 @@ class Accounts():
             return f"{last_name}.{first_name[:1]}@{domain}"
         elif email_option == 27:
             return f"{last_name}.{first_name}@{domain}"
-    
 
     def password(self, min, max):
         """Return a cryptographically random password
@@ -126,8 +122,8 @@ class Accounts():
         max INTEGER     Maximum password length
         """
         password_length = secrets.randbelow(max-min) + min
-        return "".join(secrets.choice(self.chars) for i in range(password_length))
-
+        return "".join(
+            secrets.choice(self.chars) for i in range(password_length))
 
     def headers(self):
         return {
