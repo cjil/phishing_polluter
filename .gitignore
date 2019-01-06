@@ -103,7 +103,6 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-test_values.txt
 *.code-workspace
-settings.json
-launch.json
+.vscode/*
+private/*
