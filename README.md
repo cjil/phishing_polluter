@@ -3,7 +3,7 @@ Pollute phishing attempts with fake username/password combinations
 
 Based on the [youtube video of Engineer Man](https://www.youtube.com/watch?v=UtNYzv8gLbs), I expanded upon it as an exercise to provide more pollution to the phishing scammers files in a shorter time.
 
-## Improvments
+## Improvements
 1. asyncio to add more username/passwords per second than the original
 2. added additional domain names to use
 3. using first and last name lists to generate a larger variety of email addresses
@@ -14,15 +14,14 @@ Clone the git repository
 pip install -r requirements.txt
 
 ## Usage
-```
+```console
 python phishing_polluter --help
 python phishing_polluter <TARGET_URL> [--username_code] [--password_code]
 ```
 
 ## Options
-#### qty
-* Number of email address / password combinations to pollute the list with
-#### username_code
-* Username POST field name
-#### password_code
-* Password POST field name
+```
+qty - Number of email address / password combinations to pollute the list with
+username_code - Username POST field name
+password_code - Password POST field name
+```
