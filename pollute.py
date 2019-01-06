@@ -5,6 +5,7 @@ import click
 from accounts import Accounts
 import aiohttp
 
+
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
@@ -27,7 +28,7 @@ async def post_email(url, username_code, password_code, email, password, headers
                 password_code: password
             })
     except aiohttp.client_exceptions.ClientConnectionError:
-        print(f"Unable to connect: {email} and password {password}")
+        print(f"Unable to connect to {url}. {email} and password {password} unsuccessful.")
     except Exception as e:
         print(f"Error: {e}")
 
