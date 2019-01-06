@@ -1,9 +1,9 @@
 import json
 import time
-import requests
 import asyncio
 import click
 from accounts import Accounts
+import aiohttp
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
@@ -20,12 +20,16 @@ async def post_email(url, username_code, password_code, email, password, headers
     """
 
     try:
-        requests.post(url, allow_redirects=False, data={
-            username_code: email,
-            password_code: password}, headers=headers)
-        print(f"Sending username: {email} and password {password}")
-    except requests.exceptions.ConnectionError:
+        async with aiohttp.ClientSession() as session:
+            print(f"Sending username: {email} and password {password}")
+            await session.post(url, headers=headers, allow_redirects=False, data={
+                username_code: email,
+                password_code: password
+            })
+    except aiohttp.client_exceptions.ClientConnectionError:
         print(f"Unable to connect: {email} and password {password}")
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
