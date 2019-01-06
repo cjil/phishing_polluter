@@ -1,7 +1,7 @@
 # Phishing Polluter
 Pollute phishing attempts with fake username/password combinations
 
-Based on the youtube video of Engineer Man, I expanded upon it as an exercise to provide more pollution to the phishing scammers files in a shorter time.
+Based on the [youtube video of Engineer Man](https://www.youtube.com/watch?v=UtNYzv8gLbs), I expanded upon it as an exercise to provide more pollution to the phishing scammers files in a shorter time.
 
 ## Improvments
 1. asyncio to add more username/passwords per second than the original
@@ -14,8 +14,10 @@ Clone the git repository
 pip install -r requirements.txt
 
 ## Usage
+```
 python phishing_polluter --help
 python phishing_polluter <TARGET_URL> [--username_code] [--password_code]
+```
 
 ## Options
 #### qty
