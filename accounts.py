@@ -1,7 +1,6 @@
 import os
 import secrets
 import string
-from fake_useragent import UserAgent
 
 
 class Accounts():
@@ -31,21 +30,27 @@ class Accounts():
         self.last_names = last_names
         self.domains = domains
         self.chars = f'{string.ascii_letters}{string.digits}!@#$%^&*()'
-        self.ua = UserAgent()
+        self.random_choice = secrets.SystemRandom().choice
 
-    def email(self):
-        """Generate random first_name, last_name, domain name and name
-        extra using the first_names, last_names, domain_names lists and
-        a random integer.
-
-        Return a random email address
+    def get_first_name(self):
+        """Return a random first name
         """
-        random_choice = secrets.SystemRandom().choice
-        first_name = random_choice(self.first_names).lower()
-        last_name = random_choice(self.last_names).lower()
-        domain = random_choice(self.domains).lower()
-        name_extra = str(secrets.randbelow(99))
-        return self.email_generator(first_name, last_name, name_extra, domain)
+        return self.random_choice(self.first_names).lower()
+    
+    def get_last_name(self):
+        """Return a random last name
+        """
+        return self.random_choice(self.last_names).lower()
+    
+    def get_domain(self):
+        """Return a random domain name
+        """
+        return self.random_choice(self.domains).lower()
+
+    def get_name_extra(self):
+        """Return a random number
+        """
+        return str(secrets.randbelow(99))
 
     def email_generator(self, first_name, last_name, name_extra, domain):
         """Return a random email address
@@ -124,8 +129,3 @@ class Accounts():
         password_length = secrets.randbelow(max-min) + min
         return "".join(
             secrets.choice(self.chars) for i in range(password_length))
-
-    def headers(self):
-        return {
-            'User-Agent': self.ua.random,
-        }

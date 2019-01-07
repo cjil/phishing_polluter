@@ -4,6 +4,7 @@ import asyncio
 import click
 from accounts import Accounts
 import aiohttp
+from fake_useragent import UserAgent
 
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -59,7 +60,7 @@ def pollute(**kwargs):
     qty INTEGER         Number of email/password combinations to generate
     """
     start_time = time.time()
-
+    ua = UserAgent()
     url = kwargs['url']
     username_code = kwargs['username_code']
     password_code = kwargs['password_code']
@@ -76,9 +77,16 @@ def pollute(**kwargs):
             url,
             username_code,
             password_code,
-            accounts.email(),
+            accounts.email_generator(
+                accounts.get_first_name(),
+                accounts.get_last_name(),
+                accounts.get_name_extra(),
+                accounts.get_domain()
+            ),
             accounts.password(8, 16),
-            accounts.headers()
+            {
+                'User-Agent': ua.random
+            }
         ) for i in range(0, number_of_email_addresses)]
     future = asyncio.gather(*tasks, return_exceptions=True)
     loop.run_until_complete(future)
