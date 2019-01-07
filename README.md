@@ -10,8 +10,10 @@ Based on the [youtube video of Engineer Man](https://www.youtube.com/watch?v=UtN
 4. created rules for firstname / lastname combinations (e.g. first initial + last name, last name + first initial, first name + last name, etc)
 
 ## Installation
+```
 Clone the git repository
 pip install -r requirements.txt
+```
 
 ## Usage
 ```console
