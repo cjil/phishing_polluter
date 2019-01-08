@@ -12,8 +12,12 @@ class Accounts():
         domains
         chars
     Methods:
-        email()
-        email_generator(first_name, last_name, name_extra, domain)
+        get_first_name()
+        get_last_name()
+        get_domain()
+        get_name_extra()
+        get_email_option()
+        email_generator(first_name, last_name, name_extra, domain, email_option)
         password(min, max)
     """
 
@@ -52,7 +56,12 @@ class Accounts():
         """
         return str(secrets.randbelow(99))
 
-    def email_generator(self, first_name, last_name, name_extra, domain):
+    def get_email_option(self):
+        """Return a random number between 0 and 27
+        """
+        return secrets.randbelow(27)
+
+    def email_generator(self, first_name, last_name, name_extra, domain, email_option):
         """Return a random email address
 
         Keyword arguments:
@@ -62,7 +71,6 @@ class Accounts():
         name_extra STRING   Number
         domain STRING       Domain name
         """
-        email_option = secrets.randbelow(27)
         if email_option == 0:
             return f"{first_name}{last_name}{name_extra}@{domain}"
         elif email_option == 1:

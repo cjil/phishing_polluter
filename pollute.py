@@ -81,7 +81,8 @@ def pollute(**kwargs):
                 accounts.get_first_name(),
                 accounts.get_last_name(),
                 accounts.get_name_extra(),
-                accounts.get_domain()
+                accounts.get_domain(),
+                accounts.get_email_option()
             ),
             accounts.password(8, 16),
             {
