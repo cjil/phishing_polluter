@@ -70,6 +70,7 @@ class Accounts():
         last_name STRING    Last name
         name_extra STRING   Number
         domain STRING       Domain name
+        email_option INT    Email address type to select
         """
         if email_option == 0:
             return f"{first_name}{last_name}{name_extra}@{domain}"
