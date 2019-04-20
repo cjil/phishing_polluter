@@ -5,6 +5,7 @@ import click
 from accounts import Accounts
 import aiohttp
 from fake_useragent import UserAgent
+import sys
 
 
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
@@ -71,7 +72,11 @@ def pollute(**kwargs):
         json.loads(open('first_names.json').read()),
         json.loads(open('last_names.json').read()),
         json.loads(open('domains.json').read()))
-    loop = asyncio.get_event_loop()
+    if sys.platform == 'win32':
+        loop = asyncio.ProactorEventLoop()
+    else:
+        loop = asyncio.get_event_loop()
+    asyncio.set_event_loop(loop)
     tasks = [
         post_email(
             url,
