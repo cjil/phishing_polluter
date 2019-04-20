@@ -77,7 +77,7 @@ def pollute(**kwargs):
     else:
         loop = asyncio.get_event_loop()
     asyncio.set_event_loop(loop)
-    tasks = [
+    tasks = (
         post_email(
             url,
             username_code,
@@ -93,7 +93,7 @@ def pollute(**kwargs):
             {
                 'User-Agent': ua.random
             }
-        ) for i in range(0, number_of_email_addresses)]
+        ) for i in range(0, number_of_email_addresses))
     future = asyncio.gather(*tasks, return_exceptions=True)
     loop.run_until_complete(future)
     finish_time = time.time() - start_time
