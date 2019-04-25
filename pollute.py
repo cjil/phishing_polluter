@@ -62,10 +62,12 @@ def pollute(**kwargs):
     """
     start_time = time.time()
     ua = UserAgent()
-    url = kwargs['url']
-    username_code = kwargs['username_code']
-    password_code = kwargs['password_code']
-    number_of_email_addresses = kwargs['qty']
+    url, username_code, password_code, number_of_email_addresses = (
+        kwargs['url'],
+        kwargs['username_code'],
+        kwargs['password_code'],
+        kwargs['qty']
+    )
     kwargs = None
 
     accounts = Accounts(
