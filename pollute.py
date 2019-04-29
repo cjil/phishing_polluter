@@ -70,10 +70,7 @@ def pollute(**kwargs):
     )
     kwargs = None
 
-    accounts = Accounts(
-        json.loads(open('first_names.json').read()),
-        json.loads(open('last_names.json').read()),
-        json.loads(open('domains.json').read()))
+    accounts = Accounts()
     if sys.platform == 'win32':
         loop = asyncio.ProactorEventLoop()
     else:

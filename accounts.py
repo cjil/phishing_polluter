@@ -1,6 +1,7 @@
 import os
 import secrets
 import string
+import json
 
 
 class Accounts():
@@ -21,7 +22,7 @@ class Accounts():
         password(min, max)
     """
 
-    def __init__(self, first_names, last_names, domains):
+    def __init__(self, first_names=None, last_names=None, domains=None):
         """Initialise the class
 
         Keyword arguments:
@@ -30,26 +31,32 @@ class Accounts():
         last_names LIST     Last names
         domains LIST        Domain names
         """
-        self.first_names = first_names
-        self.last_names = last_names
-        self.domains = domains
+        if first_names == None:
+            first_names = json.loads(open('first_names.json').read())
+        if last_names == None:
+            last_names = json.loads(open('last_names.json').read())
+        if domains == None:
+            domains = json.loads(open('domains.json').read())
+        self.first_names = [first_name.lower() for first_name in first_names]
+        self.last_names = [last_name.lower() for last_name in last_names]
+        self.domains = [domain.lower() for domain in domains]
         self.chars = f'{string.ascii_letters}{string.digits}!@#$%^&*()'
         self.random_choice = secrets.SystemRandom().choice
 
     def get_first_name(self):
         """Return a random first name
         """
-        return self.random_choice(self.first_names).lower()
+        return self.random_choice(self.first_names)
     
     def get_last_name(self):
         """Return a random last name
         """
-        return self.random_choice(self.last_names).lower()
+        return self.random_choice(self.last_names)
     
     def get_domain(self):
         """Return a random domain name
         """
-        return self.random_choice(self.domains).lower()
+        return self.random_choice(self.domains)
 
     def get_name_extra(self):
         """Return a random number
