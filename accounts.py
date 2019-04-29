@@ -135,13 +135,18 @@ class Accounts():
             return f"{last_name}.{first_name[:1]}@{domain}"
         elif email_option == 27:
             return f"{last_name}.{first_name}@{domain}"
+        elif email_option > 27:
+            raise ValueError(f'Email option selected does not exist')
 
-    def password(self, min, max):
+    def password(self, _min, _max):
         """Return a cryptographically random password
 
         min INTEGER     Minimum password length
         max INTEGER     Maximum password length
         """
-        password_length = secrets.randbelow(max-min) + min
+        if _min > _max:
+            raise ValueError(f'Minimum value ({_min}) should be less than maximum value ({_max})')
+        password_length = secrets.randbelow(_max-_min) + _min
         return "".join(
             secrets.choice(self.chars) for i in range(password_length))
+
