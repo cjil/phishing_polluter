@@ -4,13 +4,13 @@ import string
 import json
 
 
-class Accounts():
-    """Accounts
+class Account():
+    """Account
 
     Variables:
-        first_names
-        last_names
-        domains
+        first_name
+        last_name
+        domain
         chars
     Methods:
         get_first_name()
@@ -18,11 +18,18 @@ class Accounts():
         get_domain()
         get_name_extra()
         get_email_option()
-        email_generator(first_name, last_name, name_extra, domain, email_option)
-        password(min, max)
+        get_email_address()
+        set_password(min_length, max_length)
+        get_password()
+        set_random_option(list_of_options)
+        set_email_option()
+        set_name_extra()
+
     """
 
-    def __init__(self, first_names=None, last_names=None, domains=None):
+    def __init__(self, 
+        first_names=None, last_names=None, domains=None, 
+        min_length=None, max_length=None, email_option=None):
         """Initialise the class
 
         Keyword arguments:
@@ -32,43 +39,74 @@ class Accounts():
         domains LIST        Domain names
         """
         if first_names == None:
-            first_names = json.loads(open('first_names.json').read())
+            with open('first_names.json') as f:
+                first_names = json.loads(f.read())
         if last_names == None:
-            last_names = json.loads(open('last_names.json').read())
+            with open('last_names.json') as f:
+                last_names = json.loads(f.read())
         if domains == None:
-            domains = json.loads(open('domains.json').read())
-        self.first_names = [first_name.lower() for first_name in first_names]
-        self.last_names = [last_name.lower() for last_name in last_names]
-        self.domains = [domain.lower() for domain in domains]
+            with open('domains.json') as f:
+                domains = json.loads(f.read())
+        min_length = 8 if min_length == None else min_length
+        max_length = min_length + 4 if max_length == None else max_length
+        self.email_option = self.set_email_option() if email_option == None else email_option
+        self.first_name = self.set_random_option(
+            list_of_options=[first_name.lower() for first_name in first_names])
+        self.last_name = self.set_random_option(
+            list_of_options=[last_name.lower() for last_name in last_names])
+        self.domain = self.set_random_option(
+            list_of_options=[domain.lower() for domain in domains])
         self.chars = f'{string.ascii_letters}{string.digits}!@#$%^&*()'
-        self.random_choice = secrets.SystemRandom().choice
+        self.name_extra = self.set_name_extra()
+        self.password = self.set_password(
+            min_length=min_length,
+            max_length=max_length)
+        self.email_address = self.set_email_address()
+        
+
+    def set_random_option(self, list_of_options):
+        return secrets.SystemRandom().choice(list_of_options)
+
+    
+    def set_email_option(self):
+        return secrets.randbelow(27)
+
+
+    def set_name_extra(self):
+        return str(secrets.randbelow(99))
+
 
     def get_first_name(self):
         """Return a random first name
         """
-        return self.random_choice(self.first_names)
+        return self.first_name
+
     
     def get_last_name(self):
         """Return a random last name
         """
-        return self.random_choice(self.last_names)
+        return self.last_name
     
+
     def get_domain(self):
         """Return a random domain name
         """
-        return self.random_choice(self.domains)
+        return self.domain
+
 
     def get_name_extra(self):
         """Return a random number
         """
-        return str(secrets.randbelow(99))
+        return self.name_extra
+
 
     def get_email_option(self):
         """Return a random number between 0 and 27
         """
-        return secrets.randbelow(27)
+        return self.email_option
 
-    def email_generator(self, first_name, last_name, name_extra, domain, email_option):
+
+    def set_email_address(self, email_option=None):
         """Return a random email address
 
         Keyword arguments:
@@ -79,74 +117,83 @@ class Accounts():
         domain STRING       Domain name
         email_option INT    Email address type to select
         """
+        email_option = self.email_option if email_option == None else email_option
         if email_option == 0:
-            return f"{first_name}{last_name}{name_extra}@{domain}"
+            return f"{self.first_name}{self.last_name}{self.name_extra}@{self.domain}"
         elif email_option == 1:
-            return f"{first_name[:1]}{last_name}{name_extra}@{domain}"
+            return f"{self.first_name[:1]}{self.last_name}{self.name_extra}@{self.domain}"
         elif email_option == 2:
-            return f"{first_name}{last_name[:1]}{name_extra}@{domain}"
+            return f"{self.first_name}{self.last_name[:1]}{self.name_extra}@{self.domain}"
         elif email_option == 3:
-            return f"{last_name[:1]}{first_name}{name_extra}@{domain}"
+            return f"{self.last_name[:1]}{self.first_name}{self.name_extra}@{self.domain}"
         elif email_option == 4:
-            return f"{last_name}{first_name[:1]}{name_extra}@{domain}"
+            return f"{self.last_name}{self.first_name[:1]}{self.name_extra}@{self.domain}"
         elif email_option == 5:
-            return f"{last_name}{first_name}{name_extra}@{domain}"
+            return f"{self.last_name}{self.first_name}{self.name_extra}@{self.domain}"
         elif email_option == 6:
-            return f"{first_name}{name_extra}@{domain}"
+            return f"{self.first_name}{self.name_extra}@{self.domain}"
         elif email_option == 7:
-            return f"{last_name}{name_extra}@{domain}"
+            return f"{self.last_name}{self.name_extra}@{self.domain}"
         elif email_option == 8:
-            return f"{first_name}{last_name}@{domain}"
+            return f"{self.first_name}{self.last_name}@{self.domain}"
         elif email_option == 9:
-            return f"{first_name[:1]}{last_name}@{domain}"
+            return f"{self.first_name[:1]}{self.last_name}@{self.domain}"
         elif email_option == 10:
-            return f"{first_name}{last_name[:1]}@{domain}"
+            return f"{self.first_name}{self.last_name[:1]}@{self.domain}"
         elif email_option == 11:
-            return f"{last_name[:1]}{first_name}@{domain}"
+            return f"{self.last_name[:1]}{self.first_name}@{self.domain}"
         elif email_option == 12:
-            return f"{last_name}{first_name[:1]}@{domain}"
+            return f"{self.last_name}{self.first_name[:1]}@{self.domain}"
         elif email_option == 13:
-            return f"{last_name}{first_name}@{domain}"
+            return f"{self.last_name}{self.first_name}@{self.domain}"
         elif email_option == 14:
-            return f"{first_name}@{domain}"
+            return f"{self.first_name}@{self.domain}"
         elif email_option == 15:
-            return f"{last_name}@{domain}"
+            return f"{self.last_name}@{self.domain}"
         elif email_option == 16:
-            return f"{first_name}.{last_name}{name_extra}@{domain}"
+            return f"{self.first_name}.{self.last_name}{self.name_extra}@{self.domain}"
         elif email_option == 17:
-            return f"{first_name[:1]}.{last_name}{name_extra}@{domain}"
+            return f"{self.first_name[:1]}.{self.last_name}{self.name_extra}@{self.domain}"
         elif email_option == 18:
-            return f"{first_name}.{last_name[:1]}{name_extra}@{domain}"
+            return f"{self.first_name}.{self.last_name[:1]}{self.name_extra}@{self.domain}"
         elif email_option == 19:
-            return f"{last_name[:1]}.{first_name}{name_extra}@{domain}"
+            return f"{self.last_name[:1]}.{self.first_name}{self.name_extra}@{self.domain}"
         elif email_option == 20:
-            return f"{last_name}.{first_name[:1]}{name_extra}@{domain}"
+            return f"{self.last_name}.{self.first_name[:1]}{self.name_extra}@{self.domain}"
         elif email_option == 21:
-            return f"{last_name}.{first_name}{name_extra}@{domain}"
+            return f"{self.last_name}.{self.first_name}{self.name_extra}@{self.domain}"
         elif email_option == 22:
-            return f"{first_name}.{last_name}@{domain}"
+            return f"{self.first_name}.{self.last_name}@{self.domain}"
         elif email_option == 23:
-            return f"{first_name[:1]}.{last_name}@{domain}"
+            return f"{self.first_name[:1]}.{self.last_name}@{self.domain}"
         elif email_option == 24:
-            return f"{first_name}.{last_name[:1]}@{domain}"
+            return f"{self.first_name}.{self.last_name[:1]}@{self.domain}"
         elif email_option == 25:
-            return f"{last_name[:1]}.{first_name}@{domain}"
+            return f"{self.last_name[:1]}.{self.first_name}@{self.domain}"
         elif email_option == 26:
-            return f"{last_name}.{first_name[:1]}@{domain}"
+            return f"{self.last_name}.{self.first_name[:1]}@{self.domain}"
         elif email_option == 27:
-            return f"{last_name}.{first_name}@{domain}"
+            return f"{self.last_name}.{self.first_name}@{self.domain}"
         elif email_option > 27:
             raise ValueError(f'Email option selected does not exist')
 
-    def password(self, _min, _max):
+
+    def get_email_address(self):
+        return self.email_address
+
+
+    def set_password(self, min_length, max_length):
         """Return a cryptographically random password
 
         min INTEGER     Minimum password length
         max INTEGER     Maximum password length
         """
-        if _min > _max:
-            raise ValueError(f'Minimum value ({_min}) should be less than maximum value ({_max})')
-        password_length = secrets.randbelow(_max-_min) + _min
+        if min_length > max_length:
+            raise ValueError(f'Minimum value ({min_length}) should be less than maximum value ({max_length})')
+        password_length = secrets.randbelow(max_length-min_length) + min_length
         return "".join(
             secrets.choice(self.chars) for i in range(password_length))
+    
+    def get_password(self):
+        return self.password
 

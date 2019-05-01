@@ -2,7 +2,7 @@ import json
 import time
 import asyncio
 import click
-from accounts import Accounts
+from accounts import Account
 import aiohttp
 from fake_useragent import UserAgent
 import sys
@@ -11,7 +11,7 @@ import sys
 CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
-async def post_email(url, username_code, password_code, email, password, headers):
+async def post_email(url, username_code, password_code, email=None, password=None, headers=None):
     """Send the username and password combination to the URL
 
     Keyword arguments:
@@ -21,9 +21,17 @@ async def post_email(url, username_code, password_code, email, password, headers
     email TEXT          email address
     password TEXT       password
     """
-
     try:
         async with aiohttp.ClientSession() as session:
+            if email == None:
+                account = Account()
+                email = account.email_address()
+            if password == None:
+                account = Account() if None else account
+                password = account.password()
+            if headers == None:
+                ua = UserAgent()
+                headers = { 'User-Agent': ua.random }
             print(f"Sending username: {email} and password {password}")
             await session.post(url, headers=headers, allow_redirects=False, data={
                 username_code: email,
@@ -61,16 +69,12 @@ def pollute(**kwargs):
     qty INTEGER         Number of email/password combinations to generate
     """
     start_time = time.time()
-    ua = UserAgent()
     url, username_code, password_code, number_of_email_addresses = (
         kwargs['url'],
         kwargs['username_code'],
         kwargs['password_code'],
         kwargs['qty']
     )
-    kwargs = None
-
-    accounts = Accounts()
     if sys.platform == 'win32':
         loop = asyncio.ProactorEventLoop()
     else:
@@ -78,20 +82,9 @@ def pollute(**kwargs):
     asyncio.set_event_loop(loop)
     tasks = (
         post_email(
-            url,
-            username_code,
-            password_code,
-            accounts.email_generator(
-                accounts.get_first_name(),
-                accounts.get_last_name(),
-                accounts.get_name_extra(),
-                accounts.get_domain(),
-                accounts.get_email_option()
-            ),
-            accounts.password(8, 16),
-            {
-                'User-Agent': ua.random
-            }
+            url=url,
+            username_code=username_code,
+            password_code=password_code
         ) for i in range(0, number_of_email_addresses))
     future = asyncio.gather(*tasks, return_exceptions=True)
     loop.run_until_complete(future)
