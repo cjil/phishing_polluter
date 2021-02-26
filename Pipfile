@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 aiocontextvars = "==0.2.2"
-aiohttp = "==3.5.1"
+aiohttp = "==3.7.4"
 astroid = "==2.1.0"
 async-timeout = "==3.0.1"
 attrs = "==18.2.0"
